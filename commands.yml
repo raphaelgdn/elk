@@ -1,0 +1,8 @@
+cd /home/rneves/elk/java_image && docker image build -t elk/java_image:latest . && \
+cd /home/rneves/elk/elastic/ && docker image build -t elk/es_image:latest . && \
+cd /home/rneves/elk/logstash/ && docker image build -t elk/logstash_image:latest . && \
+cd /home/rneves/elk/kibana/ && docker image build -t elk/kibana_image:latest . && \
+cd /home/rneves/elk/filebeat/ && docker image build -t elk/filebeat_image:latest . && \
+cd /home/rneves/elk/service/nginx && docker image build -t elk/nginx_image:latest .
+
+docker container run -d -p 9080:80 --network elk --link logstash:logstash --mount type=volume,src=logs_nginx,dst=/var/log/nginx --mount type=volume,src=logs_syslog,dst=/var/log/syslog elk/nginx_image
